@@ -1,116 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
-    <link href="https://api.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.css" rel="stylesheet">
-    <script src="https://api.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.js"></script>
-</head>
-<body>
-    <style>
-        body { margin: 0; padding: 0; }
-#map { position: absolute; top: 0; bottom: 0; width: 100%; }
-#div_a{
-  background-image: url('https://bigdatauls.userena.cl/wp-content/uploads/2019/10/Vesi%C3%B3n-contenida-isotipo-BIG-DATA-ULS.png');
-  background-size: cover;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  cursor: pointer;
-}
 
-#div_b{
-  background-image: url('https://i.pinimg.com/474x/06/8b/eb/068beb5501121c498484a0e3f6fd403c.jpg');
-  background-size: cover;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  cursor: pointer;
-}
-    </style>
-    <div id="map"></div>
-    <script>
-        mapboxgl.accessToken = "pk.eyJ1Ijoiam1hcnRpbmV6Y2wiLCJhIjoiY2w1c2RwYmk0Mjl3MzNrcGl3bDIzcWd2cyJ9.H09NN_RapDgKq1sBJPZRUA";
-    const map = new mapboxgl.Map({
-      container: 'map', // container ID
-      style: 'mapbox://styles/jmartinezcl/cl5slj3ld000k15nb9c6tuley', // style URL
-      center: [-56.149,-11.217], // starting position [lng, lat]
-      zoom: 2, // starting zoom
-      projection: 'globe' // display the map as a 3D globe
-    });
-    map.on('style.load', () => {
-      map.setFog({}); // Set the default atmosphere style
-    });
-    
-    const serena = [-71.2717840270455, -29.912309205381106]
-    const lima = [-77.03588842732569, -12.05537483058261]
-    
-    const popup_a = new mapboxgl.Popup({offset:25}).setText(
-      'Bigdata ULS'
-    );
-    const popup_b = new mapboxgl.Popup({offset:25}).setText(
-      'Universidad Nacional Mayor de San Marcos'
-    );
-    
-    const div_a = document.createElement('div');
-    div_a.id = "div_a";
-    const div_b = document.createElement('div');
-    div_b.id = "div_b";
-    
-    new mapboxgl.Marker(div_a)
-      .setLngLat(serena)
-      .setPopup(popup_a)
-      .addTo(map);
-    new mapboxgl.Marker(div_b)
-      .setLngLat(lima)
-      .setPopup(popup_b)
-      .addTo(map);
-    
-    const secondsPerRevolution = 120;
-    const maxSpinZoom = 5;
-    const slowSpinZoom = 3;
-    let userInteracting = false;
-    let spinEnabled = true;
-    
-    function spinGlobe(){
-      const zoom = map.getZoom();
-      if(spinEnabled && !userInteracting && zoom < maxSpinZoom){
-        let distancePerSecond = 360/ secondsPerRevolution;
-        if(zoom > slowSpinZoom){
-          const zoomDif = (maxSpinZoom - zoom)/(maxSpinZoom - slowSpinZoom);
-          distancePerSecond *= zoomDif;
-        }
-        const center = map.getCenter();
-        center.lng -= distancePerSecond;
-        map.easeTo({ center, duration:1000, easing:(n)=> n});
-      }
-    }
-    map.on('mousedown', ()=>{
-      userInteracting = true;
-    });
-    map.on('mouseup', ()=> {
-      userinteracting = false;
-      spinGlobe();
-    });
-    map.on('dragend', () => {
-        userInteracting = false;
-        spinGlobe();
-    });
-    map.on('pitchend', () => {
-        userInteracting = false;
-        spinGlobe();
-    });
-    map.on('rotateend', () => {
-        userInteracting = false;
-        spinGlobe();
-    });
-    map.on('moveend', ()=> {
-      spinGlobe();
-    });
-    spinGlobe();
-    </script>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bigdata Internacional</title>
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+  <link href="https://api.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.css" rel="stylesheet">
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.js"></script>
+  <link href="/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+  <div id="map"></div>
+  <div class="bduls-info" id="bduls-container"></div>
+  <div class="title" id="map-title"></div>
+  <div class="map-overlay" id="legend"></div>
+
 </body>
+<script src="/js/script.js"></script>
+
 </html>
